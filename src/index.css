@@ -103,9 +103,24 @@
   height: 500px;
   background-color: rgb(35, 35, 36);
   margin: 2em auto;
-  border-radius: 30px;
-  position: relative;
+  border-radius: 10px;
+  color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-self: center;
   box-shadow: 0 3px 30px -2px rgb(250, 250, 250);
+}
+.bar{
+  background-color: #f5aa3b;
+  box-shadow: 0 3px 30px -2px rgb(216, 170, 72);
+  color:white;
+  margin: 0 6px;
+  width: 9px;
+  /* transform: rotate(0deg) scaleX(1); */
+  /* vertical-align:bottom; */
+  display: inline-block;
+  /* box-shadow: 0 3px 20px -2px rgb(31, 137, 141);
+  background-color: turquoise; */
 }
 body{
     margin: 0;
@@ -137,26 +152,4 @@ input[type="range"]{
   background-color: rgb(29, 105, 156);
   border-radius: 5px;
   overflow: hidden;
-}
-
-/* Style the links inside the navigation bar */
-.topnav a {
-  float: left;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-/* Change the color of links on hover */
-.topnav a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Add a color to the active/current link */
-.topnav a.active {
-  background-color: #121116;
-  color: rgb(250, 248, 248);
 }
