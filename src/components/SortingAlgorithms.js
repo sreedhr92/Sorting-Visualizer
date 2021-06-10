@@ -111,3 +111,39 @@ export function getBubbleSortAnimation(array) {
   }
   return animations;
 }
+export function getInsertionSortAnimation(array) {
+  const animations = []
+  let size = array.length;
+  for(let i = 0;i<size;i++)
+  {
+     let key = array[i];
+     let hasMoved = false;
+     let notPlaced = true;
+     for(let j=i-1;j>=0;j--)
+     {
+          animations.push([i, j]);
+          animations.push([i, j]);
+          if(array[j]>key)
+          {
+              array[j+1]=array[j];
+              animations.push([j+1, array[j]]);
+              hasMoved = true;
+          }
+          else
+          {
+                array[j+1]=key;
+                animations.push([j+1, key]);
+                notPlaced = false;
+                break;
+          }
+      }
+         if(hasMoved===true && notPlaced===true)
+          {
+              animations.push([0, i]);
+              animations.push([0, i]);
+              animations.push([0, key]);
+              array[0] = key;
+          }
+  }
+  return animations;
+}

@@ -2,11 +2,11 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import { useState,useEffect } from 'react';
-import {getMergeSortAnimations,getBubbleSortAnimation} from './SortingAlgorithms.js';
+import {getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation} from './SortingAlgorithms.js';
 
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 20;
+const ANIMATION_SPEED_MS = 10;
 
 // This is the main color of the array bars.
 const PRIMARY_COLOR = '#f5aa3b';
@@ -44,7 +44,10 @@ const SortingVisualizer = () => {
             for(let i=0;i<arrayBars.length;i++)
             {
               arrayBars[i].style.backgroundColor=SORTED_COLOR;
+              arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
             }
+            const box = document.getElementById('box');
+            box.style.boxShadow = "0 3px 30px -2px green"
             setStarted(false);
             setType('');
             toast.success('Successfully Sorted!');
@@ -75,8 +78,8 @@ const SortingVisualizer = () => {
       {
         setStarted(true);
       }
-        const animations = getBubbleSortAnimation(arr);
-    for (let i = 0; i < animations.length; i++) {
+      const animations = getBubbleSortAnimation(arr);
+      for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('bar');
       if(i===animations.length-1)
         {
@@ -85,7 +88,10 @@ const SortingVisualizer = () => {
               for(let i=0;i<arrayBars.length;i++)
               {
                 arrayBars[i].style.backgroundColor=SORTED_COLOR;
+                arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
               }
+              const box = document.getElementById('box');
+              box.style.boxShadow = "0 3px 30px -2px green"
               toast.success('Successfully Sorted!');
               setStarted(false);
               setType('');
@@ -111,7 +117,50 @@ const SortingVisualizer = () => {
         }, i * ANIMATION_SPEED_MS);
       }
     }
-    // setStarted(false);
+    }
+    const insertion_sort = () =>{
+      if(started===false)
+      {
+        setStarted(true);
+      }
+      const animations = getInsertionSortAnimation(arr);
+      for (let i = 0; i < animations.length; i++) {
+        if(i===animations.length-1)
+        {
+            setTimeout(()=>{
+              const arrayBars = document.getElementsByClassName('bar');
+              for(let i=0;i<arrayBars.length;i++)
+              {
+                arrayBars[i].style.backgroundColor=SORTED_COLOR;
+                arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
+              }
+              const box = document.getElementById('box');
+              box.style.boxShadow = "0 3px 30px -2px green"
+              setStarted(false);
+              setType('');
+              toast.success('Successfully Sorted!');
+            },i*ANIMATION_SPEED_MS)
+        }
+        const arrayBars = document.getElementsByClassName('bar');
+        const isColorChange = i % 3 !== 2;
+        if (isColorChange) {
+          const [barOneIdx, barTwoIdx] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          const barTwoStyle = arrayBars[barTwoIdx].style;
+          const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+          setTimeout(() => {
+            barOneStyle.backgroundColor = color;
+            barTwoStyle.backgroundColor = color;
+          }, i * ANIMATION_SPEED_MS);
+        } else {
+          setTimeout(() => {
+            const [barOneIdx, newHeight] = animations[i];
+            const barOneStyle = arrayBars[barOneIdx].style;
+            barOneStyle.height = `${newHeight}px`;
+          }, i * ANIMATION_SPEED_MS);
+        }
+      }
+      console.log(arr)
     }
     const createArray = () =>{
         if(started===true)
@@ -123,13 +172,16 @@ const SortingVisualizer = () => {
         for(let i=0;i<arrayBars.length;i++)
         {
           arrayBars[i].style.backgroundColor=PRIMARY_COLOR;
+          arrayBars[i].style.boxShadow = "0 3px 30px -2px rgb(216, 170, 72)";
         }
+        const box = document.getElementById('box');
+        box.style.boxShadow = "0 3px 30px -2px rgb(250, 250, 250)";
         const Array=[]
         for(let i=0;i<size;i++){
             Array.push(random(50,450));
         }
         setArr(Array)
-        // console.log(arr)
+        console.log(arr)
     }
     const sort=()=>{
         if(started === true)
@@ -145,13 +197,13 @@ const SortingVisualizer = () => {
         }
         else
         {
-            // console.log(type);
-            // console.log(started);
               setTimeout(() => {
                 if(type==="merge_sort")
                 merge_sort();
               else if(type==="bubble_sort")
                   bubble_sort();
+              else if(type==="insertion_sort")
+                  insertion_sort();
               else
               {
                       toast('Implementation in process try other algorithms',
