@@ -12,7 +12,7 @@ const ANIMATION_SPEED_MS = 10;
 const PRIMARY_COLOR = '#f5aa3b';
 
 // This is the color of array bars that are being compared throughout the animations.
-const SECONDARY_COLOR = 'torquoise';
+const SECONDARY_COLOR = 'rgb(177, 0, 0)';
 const SORTED_COLOR = 'GREEN';
 
 const SortingVisualizer = () => {
