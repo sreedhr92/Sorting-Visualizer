@@ -17,7 +17,7 @@ const SORTED_COLOR = 'GREEN';
 
 const SortingVisualizer = () => {
     const [arr, setArr] = useState([]);
-    const [type, setType] = useState('merge_sort');
+    const [type, setType] = useState('');
     const [size,setSize] = useState(50);
     const [started,setStarted] = useState(false);
     const randomize = () =>{
@@ -44,6 +44,7 @@ const SortingVisualizer = () => {
               arrayBars[i].style.backgroundColor=SORTED_COLOR;
             }
             setStarted(false);
+            setType('');
             toast.success('Successfully Sorted!');
           },i*ANIMATION_SPEED_MS)
       }
@@ -85,6 +86,7 @@ const SortingVisualizer = () => {
               }
               toast.success('Successfully Sorted!');
               setStarted(false);
+              setType('');
             },i*ANIMATION_SPEED_MS)
         }
       const isColorChange = i % 4 !== 2 && i % 4 !== 3;
@@ -132,6 +134,12 @@ const SortingVisualizer = () => {
         {
             toast.error("Sorting already in progress")
             return;
+        }
+        if(type === '')
+        {
+          toast.error("Select an Algorithm");
+          createArray();
+          return;
         }
         else
         {
