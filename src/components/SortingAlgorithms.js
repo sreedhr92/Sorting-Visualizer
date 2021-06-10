@@ -84,10 +84,15 @@ export function getBubbleSortAnimation(array) {
   {
       for(let j=0;j<size-i-1;j++)
       {
+        // These are the values that we're comparing; we push them once
+        // to change their color.
         animations.push([j, j+1]);
+        // These are the values that we're comparing; we push them a second
+        // time to revert their color.
         animations.push([j, j+1]);
           if(array[j]>array[j+1])
           {
+            // Swapping the height of the original array
             animations.push([j, array[j+1]]);
             animations.push([j+1, array[j]]);
             let temp = array[j];
