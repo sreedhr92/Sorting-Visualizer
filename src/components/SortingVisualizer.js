@@ -6,13 +6,13 @@ import {getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,
 
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 20;
+const ANIMATION_SPEED_MS = 10;
 
 // This is the main color of the array bars.
 const PRIMARY_COLOR = '#f5aa3b';
 
 // This is the color of array bars that are being compared throughout the animations.
-const SECONDARY_COLOR = 'RED';
+const SECONDARY_COLOR = 'torquoise';
 const SORTED_COLOR = 'GREEN';
 
 const SortingVisualizer = () => {
@@ -62,7 +62,9 @@ const SortingVisualizer = () => {
         const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
+          barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
           barTwoStyle.backgroundColor = color;
+          barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
         }, i * ANIMATION_SPEED_MS);
       } else {
         setTimeout(() => {
@@ -107,7 +109,9 @@ const SortingVisualizer = () => {
         const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
+          barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
           barTwoStyle.backgroundColor = color;
+          barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
         }, i * ANIMATION_SPEED_MS);
       } else {
         setTimeout(() => {
@@ -152,7 +156,9 @@ const SortingVisualizer = () => {
         const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
         setTimeout(() => {
           barOneStyle.backgroundColor = color;
+          barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
           barTwoStyle.backgroundColor = color;
+          barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
         }, i * ANIMATION_SPEED_MS);
       } else {
         setTimeout(() => {
@@ -196,7 +202,9 @@ const SortingVisualizer = () => {
           const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
           setTimeout(() => {
             barOneStyle.backgroundColor = color;
+            barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
             barTwoStyle.backgroundColor = color;
+            barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
           }, i * ANIMATION_SPEED_MS);
         } else {
           setTimeout(() => {
@@ -322,7 +330,7 @@ const SortingVisualizer = () => {
           {
                   arr.map((value,index) => {
                   return(
-                        <div className="bar" style={{height:value,backgroundColor:PRIMARY_COLOR}} key={index} >
+                        <div className="bar" style={{height:value}} key={index} >
                         </div>
                   )
             })}
