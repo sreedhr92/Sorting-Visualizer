@@ -82,6 +82,7 @@ export function getBubbleSortAnimation(array) {
 
   for(let i=0;i<size;i++)
   {
+      let sorted = true;
       for(let j=0;j<size-i-1;j++)
       {
         // These are the values that we're comparing; we push them once
@@ -98,12 +99,15 @@ export function getBubbleSortAnimation(array) {
             let temp = array[j];
             array[j]=array[j+1];
             array[j+1]=temp;
+            sorted = false;
           }
           else{
-              animations.push([null,null]);
-              animations.push([null,null]);
+            animations.push([null,null]);
+            animations.push([null,null]);
           }
       }
+      if(sorted===true)
+        break;
   }
   return animations;
 }

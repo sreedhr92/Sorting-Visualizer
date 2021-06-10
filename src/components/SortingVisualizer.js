@@ -23,9 +23,11 @@ const SortingVisualizer = () => {
     const randomize = () =>{
         if (started === true)
         {
-          toast.error("Sorting already in progress");
+            toast.error("Sorting already in progress");
             return;
         }
+        setStarted(false);
+        setType('');
         createArray();
     }
     const merge_sort = () =>{
@@ -33,11 +35,11 @@ const SortingVisualizer = () => {
       {
         setStarted(true);
       }
-        const animations = getMergeSortAnimations(arr);
-    for (let i = 0; i < animations.length; i++) {
+      const animations = getMergeSortAnimations(arr);
+      for (let i = 0; i < animations.length; i++) {
       if(i===animations.length-1)
       {
-        setTimeout(()=>{
+          setTimeout(()=>{
             const arrayBars = document.getElementsByClassName('bar');
             for(let i=0;i<arrayBars.length;i++)
             {
@@ -183,8 +185,12 @@ const SortingVisualizer = () => {
             toast.error("Sorting already in progress")
             return;
         }
-        setSize(e.target.value);
-        createArray();
+        else
+        {
+          setSize(e.target.value);
+          createArray();
+        }
+
 
     }
     useEffect(()=>{
