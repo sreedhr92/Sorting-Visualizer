@@ -1,42 +1,125 @@
 import React from 'react';
+import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { useState,useEffect } from 'react';
+import {getMergeSortAnimations,getBubbleSortAnimation} from './SortingAlgorithms.js';
+
+
+// Change this value for the speed of the animations.
+const ANIMATION_SPEED_MS = 20;
+
+// This is the main color of the array bars.
+const PRIMARY_COLOR = '#f5aa3b';
+
+// This is the color of array bars that are being compared throughout the animations.
+const SECONDARY_COLOR = 'RED';
+const SORTED_COLOR = 'GREEN';
+
 const SortingVisualizer = () => {
-    const [arr, setArr] = useState([143, 362, 380, 396, 81, 100, 281, 70, 107, 213, 136, 306, 160, 383, 238, 370, 366, 174, 89, 241, 390, 441, 419, 286, 377, 331, 264, 51, 111, 156, 248, 357, 354, 237, 132, 321, 412, 60, 425, 440, 150, 235, 298, 133, 88, 273, 392, 295, 341, 370]);
+    const [arr, setArr] = useState([]);
     const [type, setType] = useState('merge_sort');
     const [size,setSize] = useState(50);
     const [started,setStarted] = useState(false);
     const randomize = () =>{
         if (started === true)
         {
-            alert("Sorting already on process");
+          toast.error("Sorting already in progress");
             return;
         }
         createArray();
     }
     const merge_sort = () =>{
-        
-
+      if(started===false)
+      {
+        setStarted(true);
+      }
+        const animations = getMergeSortAnimations(arr);
+    for (let i = 0; i < animations.length; i++) {
+      if(i===animations.length-1)
+      {
+        setTimeout(()=>{
+            const arrayBars = document.getElementsByClassName('bar');
+            for(let i=0;i<arrayBars.length;i++)
+            {
+              arrayBars[i].style.backgroundColor=SORTED_COLOR;
+            }
+            setStarted(false);
+            toast.success('Successfully Sorted!');
+          },i*ANIMATION_SPEED_MS)
+      }
+      const arrayBars = document.getElementsByClassName('bar');
+      const isColorChange = i % 3 !== 2;
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * ANIMATION_SPEED_MS);
+      } else {
+        setTimeout(() => {
+          const [barOneIdx, newHeight] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * ANIMATION_SPEED_MS);
+      }
+    }
     }
     const bubble_sort = () =>{
-            for(let i=0;i<size;i++)
-            {
-                for(let j=0;j<size-i;j++)
-                {
-                    if(arr[j]>arr[j+1])
-                    {
-                        let temp = arr[j];
-                        arr[j]=arr[j+1];
-                        arr[j+1]=temp;
-                    }
-                }
-
-            }
-            // setInterval(() => {
-            //     document.getElementById("box").style.boxShadow="0 3px 20px -2px rgb(39, 126, 61)";
-            //     document.getElementById("box").style.boxShadow=" 0 3px 30px -2px rgb(250, 250, 250)";
-            // }, 20);
+      if(started===false)
+      {
+        setStarted(true);
+      }
+        const animations = getBubbleSortAnimation(arr);
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName('bar');
+      if(i===animations.length-1)
+        {
+          setTimeout(()=>{
+              const arrayBars = document.getElementsByClassName('bar');
+              for(let i=0;i<arrayBars.length;i++)
+              {
+                arrayBars[i].style.backgroundColor=SORTED_COLOR;
+              }
+              toast.success('Successfully Sorted!');
+              setStarted(false);
+            },i*ANIMATION_SPEED_MS)
+        }
+      const isColorChange = i % 4 !== 2 && i % 4 !== 3;
+      if(animations[i][0]==null)
+        continue;
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * ANIMATION_SPEED_MS);
+      } else {
+        setTimeout(() => {
+          const [barOneIdx, newHeight] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * ANIMATION_SPEED_MS);
+      }
+    }
+    // setStarted(false);
     }
     const createArray = () =>{
+        if(started===true)
+        {
+            toast.error("Sorting already in progress");
+            return;
+        }
+        const arrayBars = document.getElementsByClassName('bar');
+        for(let i=0;i<arrayBars.length;i++)
+        {
+          arrayBars[i].style.backgroundColor=PRIMARY_COLOR;
+        }
         const Array=[]
         for(let i=0;i<size;i++){
             Array.push(random(50,450));
@@ -46,24 +129,50 @@ const SortingVisualizer = () => {
     }
     const sort=()=>{
         if(started === true)
+        {
+            toast.error("Sorting already in progress")
             return;
-        console.log(type);
-        setStarted(true);
-        if(type==="merge_sort")
-            merge_sort();
-        else if(type==="bubble_sort")
-            bubble_sort();
-        setStarted(false);
+        }
+        else
+        {
+            // console.log(type);
+            // console.log(started);
+              setTimeout(() => {
+                if(type==="merge_sort")
+                merge_sort();
+              else if(type==="bubble_sort")
+                  bubble_sort();
+              else
+              {
+                      toast('Implementation in process try other algorithms',
+                      {
+                        icon: '👾',
+                        style: {
+                          borderRadius: '10px',
+                          background: '#333',
+                          backdropFilter : 'blur(10px)',
+                          color: '#fff',
+                        },
+                        position: "top-center",
+                      }
+                    );
+            }
+              }, 10);
+
+        }
     }
     const changeType = (e) =>{
         if(started === true)
+        {
+            toast.error("Sorting already in progress")
             return;
+        }
         setType(e.target.value);
     }
     const changeSize = (e) =>{
         if(started===true)
         {
-            alert("Sorting already on process");
+            toast.error("Sorting already in progress")
             return;
         }
         setSize(e.target.value);
@@ -71,8 +180,17 @@ const SortingVisualizer = () => {
 
     }
     useEffect(()=>{
-    },[size],[arr])
+        createArray();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[size])
     return (<div>
+        <div><Toaster
+        position="top-left"
+        reverseOrder={false}
+        toastOptions={{
+            duration: 1500,
+          }}
+        /></div>
         <center><h2 className="heading">Sorting Visualizer</h2></center>
       <div className="App">
           <label className="text">Size</label>
@@ -88,7 +206,7 @@ const SortingVisualizer = () => {
           {
                   arr.map((value,index) => {
                   return(
-                        <div className="bar" style={{height:value}} key={index} >
+                        <div className="bar" style={{height:value,backgroundColor:PRIMARY_COLOR}} key={index} >
                         </div>
                   )
             })}

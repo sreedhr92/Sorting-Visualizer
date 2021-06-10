@@ -103,9 +103,14 @@
   height: 500px;
   background-color: rgb(35, 35, 36);
   margin: 2em auto;
+  /* padding-top: 58px;
+  padding-left: 20px;
+  padding-right: 20px; */
+  /* flex-wrap: nowrap; */
   border-radius: 10px;
   color: #ddd;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-self: center;
   box-shadow: 0 3px 30px -2px rgb(250, 250, 250);
