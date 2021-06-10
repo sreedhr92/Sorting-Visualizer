@@ -6,7 +6,7 @@ import {getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,
 
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 10;
+const ANIMATION_SPEED_MS = 20;
 
 // This is the main color of the array bars.
 const PRIMARY_COLOR = '#f5aa3b';
@@ -124,8 +124,6 @@ const SortingVisualizer = () => {
         setStarted(true);
       }
       const animations = getQuickSortAnimation(arr);
-      //console.log(animations);
-      // console.log(arr);
       for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('bar');
       if(i===animations.length-1)
@@ -229,7 +227,7 @@ const SortingVisualizer = () => {
             Array.push(random(50,450));
         }
         setArr(Array)
-        console.log(arr)
+        // console.log(arr)
     }
     const sort=()=>{
         if(started === true)
