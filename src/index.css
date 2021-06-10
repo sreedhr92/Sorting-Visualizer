@@ -152,9 +152,10 @@ body{
 input[type="range"]{
   color: #ddd;
 }
- /* Add a black background color to the top navigation */
- .topnav {
-  background-color: rgb(29, 105, 156);
-  border-radius: 5px;
-  overflow: hidden;
+.title{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  justify-content: center;
+  margin: auto;
+	align-items: center;
 }

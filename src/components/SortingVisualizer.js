@@ -2,7 +2,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import { useState,useEffect } from 'react';
-import {getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation} from './SortingAlgorithms.js';
+import {getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,getQuickSortAnimation} from './SortingAlgorithms.js';
 
 
 // Change this value for the speed of the animations.
@@ -118,6 +118,54 @@ const SortingVisualizer = () => {
       }
     }
     }
+    const quick_sort = () =>{
+      if(started===false)
+      {
+        setStarted(true);
+      }
+      const animations = getQuickSortAnimation(arr);
+      //console.log(animations);
+      // console.log(arr);
+      for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName('bar');
+      if(i===animations.length-1)
+        {
+          setTimeout(()=>{
+              const arrayBars = document.getElementsByClassName('bar');
+              for(let i=0;i<arrayBars.length;i++)
+              {
+                arrayBars[i].style.backgroundColor=SORTED_COLOR;
+                arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
+              }
+              const box = document.getElementById('box');
+              box.style.boxShadow = "0 3px 30px -2px green"
+              toast.success('Successfully Sorted!');
+              setStarted(false);
+              setType('');
+            },i*ANIMATION_SPEED_MS)
+        }
+      if(animations[i][0]==null)
+        continue;
+      const isColorChange = i % 4 !== 2 && i % 4 !== 3;
+      if (isColorChange) {
+        const [barOneIdx, barTwoIdx] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        const barTwoStyle = arrayBars[barTwoIdx].style;
+        const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = color;
+          barTwoStyle.backgroundColor = color;
+        }, i * ANIMATION_SPEED_MS);
+      } else {
+        setTimeout(() => {
+          const [barOneIdx, newHeight] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          barOneStyle.height = `${newHeight}px`;
+        }, i * ANIMATION_SPEED_MS);
+      }
+    }
+
+    }
     const insertion_sort = () =>{
       if(started===false)
       {
@@ -160,7 +208,7 @@ const SortingVisualizer = () => {
           }, i * ANIMATION_SPEED_MS);
         }
       }
-      console.log(arr)
+
     }
     const createArray = () =>{
         if(started===true)
@@ -198,12 +246,14 @@ const SortingVisualizer = () => {
         else
         {
               setTimeout(() => {
-                if(type==="merge_sort")
-                merge_sort();
+              if(type==="merge_sort")
+                  merge_sort();
               else if(type==="bubble_sort")
-                  bubble_sort();
+                    bubble_sort();
               else if(type==="insertion_sort")
-                  insertion_sort();
+                    insertion_sort();
+              else if(type==="quick_sort")
+                    quick_sort();
               else
               {
                       toast('Implementation in process try other algorithms',
@@ -257,7 +307,9 @@ const SortingVisualizer = () => {
             duration: 1500,
           }}
         /></div>
+        <div className="title">
         <center><h2 className="heading">Sorting Visualizer</h2></center>
+        </div>
       <div className="App">
           <label className="text">Size</label>
           <input className="range" value={size} type="range" min="30" max="80" step="10" onChange={(e)=>{changeSize(e);setSize(e.target.value)}}></input>
