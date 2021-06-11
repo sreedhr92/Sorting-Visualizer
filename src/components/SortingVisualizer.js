@@ -2,17 +2,19 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import { useState,useEffect } from 'react';
-import {getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,getQuickSortAnimation} from './SortingAlgorithms.js';
+import {random,getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,getQuickSortAnimation} from './SortingAlgorithms.js';
 
 
-// Change this value for the speed of the animations.
+// speed of the animations.
 const ANIMATION_SPEED_MS = 10;
 
-// This is the main color of the array bars.
+// main color of the array bars.
 const PRIMARY_COLOR = '#f5aa3b';
 
-// This is the color of array bars that are being compared throughout the animations.
+// color of array bars that are being compared throughout the animations.
 const SECONDARY_COLOR = 'rgb(177, 0, 0)';
+
+// color of array bars after the array being sorted
 const SORTED_COLOR = 'GREEN';
 
 const SortingVisualizer = () => {
@@ -20,177 +22,68 @@ const SortingVisualizer = () => {
     const [type, setType] = useState('');
     const [size,setSize] = useState(50);
     const [started,setStarted] = useState(false);
-    const randomize = () =>{
-        if (started === true)
+
+
+
+    const checkStarted =() =>{
+      if (started === true)
+      {
+        toast('Sorting in process',
         {
-            toast.error("Sorting already in progress");
-            return;
+          icon: '⏳',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            backdropFilter : 'blur(10px)',
+            color: '#fff',
+          },
+          position: "top-center",
         }
+      );
+          return true;
+      }
+      return false;
+    }
+
+    const displaySuccess = ()=>{
+      const arrayBars = document.getElementsByClassName('bar');
+      for(let i=0;i<arrayBars.length;i++)
+      {
+        arrayBars[i].style.backgroundColor=SORTED_COLOR;
+        arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
+      }
+      const box = document.getElementById('box');
+      box.style.boxShadow = "0 3px 30px -2px green";
+      toast('Successfully Sorted',
+        {
+          icon: '✔',
+          style: {
+            borderRadius: '10px',
+            background: '#333',
+            backdropFilter : 'blur(10px)',
+            color: '#fff',
+          },
+          position: "top-center",
+        }
+      );
+    }
+    const randomize = () =>{
+        if(checkStarted())return;
         setStarted(false);
         setType('');
         createArray();
     }
-    const merge_sort = () =>{
-      if(started===false)
-      {
-        setStarted(true);
-      }
-      const animations = getMergeSortAnimations(arr);
-      for (let i = 0; i < animations.length; i++) {
-      if(i===animations.length-1)
-      {
-          setTimeout(()=>{
-            const arrayBars = document.getElementsByClassName('bar');
-            for(let i=0;i<arrayBars.length;i++)
-            {
-              arrayBars[i].style.backgroundColor=SORTED_COLOR;
-              arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
-            }
-            const box = document.getElementById('box');
-            box.style.boxShadow = "0 3px 30px -2px green"
-            setStarted(false);
-            setType('');
-            toast.success('Successfully Sorted!');
-          },i*ANIMATION_SPEED_MS)
-      }
-      const arrayBars = document.getElementsByClassName('bar');
-      const isColorChange = i % 3 !== 2;
-      if (isColorChange) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        const barOneStyle = arrayBars[barOneIdx].style;
-        const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
-        setTimeout(() => {
-          barOneStyle.backgroundColor = color;
-          barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
-          barTwoStyle.backgroundColor = color;
-          barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
-        }, i * ANIMATION_SPEED_MS);
-      } else {
-        setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
-          const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.height = `${newHeight}px`;
-        }, i * ANIMATION_SPEED_MS);
-      }
-    }
-    }
-    const bubble_sort = () =>{
-      if(started===false)
-      {
-        setStarted(true);
-      }
-      const animations = getBubbleSortAnimation(arr);
-      for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName('bar');
-      if(i===animations.length-1)
-        {
-          setTimeout(()=>{
-              const arrayBars = document.getElementsByClassName('bar');
-              for(let i=0;i<arrayBars.length;i++)
-              {
-                arrayBars[i].style.backgroundColor=SORTED_COLOR;
-                arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
-              }
-              const box = document.getElementById('box');
-              box.style.boxShadow = "0 3px 30px -2px green"
-              toast.success('Successfully Sorted!');
-              setStarted(false);
-              setType('');
-            },i*ANIMATION_SPEED_MS)
-        }
-      const isColorChange = i % 4 !== 2 && i % 4 !== 3;
-      if(animations[i][0]==null)
-        continue;
-      if (isColorChange) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        const barOneStyle = arrayBars[barOneIdx].style;
-        const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
-        setTimeout(() => {
-          barOneStyle.backgroundColor = color;
-          barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
-          barTwoStyle.backgroundColor = color;
-          barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
-        }, i * ANIMATION_SPEED_MS);
-      } else {
-        setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
-          const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.height = `${newHeight}px`;
-        }, i * ANIMATION_SPEED_MS);
-      }
-    }
-    }
-    const quick_sort = () =>{
-      if(started===false)
-      {
-        setStarted(true);
-      }
-      const animations = getQuickSortAnimation(arr);
-      for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName('bar');
-      if(i===animations.length-1)
-        {
-          setTimeout(()=>{
-              const arrayBars = document.getElementsByClassName('bar');
-              for(let i=0;i<arrayBars.length;i++)
-              {
-                arrayBars[i].style.backgroundColor=SORTED_COLOR;
-                arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
-              }
-              const box = document.getElementById('box');
-              box.style.boxShadow = "0 3px 30px -2px green"
-              toast.success('Successfully Sorted!');
-              setStarted(false);
-              setType('');
-            },i*ANIMATION_SPEED_MS)
-        }
-      if(animations[i][0]==null)
-        continue;
-      const isColorChange = i % 4 !== 2 && i % 4 !== 3;
-      if (isColorChange) {
-        const [barOneIdx, barTwoIdx] = animations[i];
-        const barOneStyle = arrayBars[barOneIdx].style;
-        const barTwoStyle = arrayBars[barTwoIdx].style;
-        const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
-        setTimeout(() => {
-          barOneStyle.backgroundColor = color;
-          barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
-          barTwoStyle.backgroundColor = color;
-          barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
-        }, i * ANIMATION_SPEED_MS);
-      } else {
-        setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
-          const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.height = `${newHeight}px`;
-        }, i * ANIMATION_SPEED_MS);
-      }
-    }
 
-    }
-    const insertion_sort = () =>{
-      if(started===false)
-      {
-        setStarted(true);
-      }
-      const animations = getInsertionSortAnimation(arr);
+    const ovrewriteAnimations = (animations) =>{
+
       for (let i = 0; i < animations.length; i++) {
         if(i===animations.length-1)
         {
             setTimeout(()=>{
-              const arrayBars = document.getElementsByClassName('bar');
-              for(let i=0;i<arrayBars.length;i++)
-              {
-                arrayBars[i].style.backgroundColor=SORTED_COLOR;
-                arrayBars[i].style.boxShadow = "0 3px 10px -2px green";
-              }
-              const box = document.getElementById('box');
-              box.style.boxShadow = "0 3px 30px -2px green"
               setStarted(false);
+               //  Removing this we can make sort the sorted array again to visualize the best case scenario
               setType('');
-              toast.success('Successfully Sorted!');
+              displaySuccess();
             },i*ANIMATION_SPEED_MS)
         }
         const arrayBars = document.getElementsByClassName('bar');
@@ -214,14 +107,78 @@ const SortingVisualizer = () => {
           }, i * ANIMATION_SPEED_MS);
         }
       }
+    }
+
+    const swappingAnimations = (animations) =>{
+      for (let i = 0; i < animations.length; i++) {
+        const arrayBars = document.getElementsByClassName('bar');
+        if(i===animations.length-1)
+          {
+            setTimeout(()=>{
+                displaySuccess();
+                setStarted(false);
+                //  Removing this we can make sort the sorted array again to visualize the best case scenario
+                setType('');
+              },i*ANIMATION_SPEED_MS)
+          }
+        const isColorChange = i % 4 !== 2 && i % 4 !== 3;
+        if(animations[i][0]==null)
+          continue;
+        if (isColorChange) {
+          const [barOneIdx, barTwoIdx] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          const barTwoStyle = arrayBars[barTwoIdx].style;
+          const color = i % 4 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+          setTimeout(() => {
+            barOneStyle.backgroundColor = color;
+            barOneStyle.boxShadow  = "0 3px 30px -2px "+color;
+            barTwoStyle.backgroundColor = color;
+            barTwoStyle.boxShadow  = "0 3px 30px -2px "+color;
+          }, i * ANIMATION_SPEED_MS);
+        } else {
+          setTimeout(() => {
+            const [barOneIdx, newHeight] = animations[i];
+            const barOneStyle = arrayBars[barOneIdx].style;
+            barOneStyle.height = `${newHeight}px`;
+          }, i * ANIMATION_SPEED_MS);
+        }
+      }
+
+    }
+    const merge_sort = () =>{
+      if(started===false)
+        setStarted(true);
+      const animations = getMergeSortAnimations(arr);
+      ovrewriteAnimations(animations);
+
+    }
+    const bubble_sort = () =>{
+      if(started===false)
+          setStarted(true);
+      const animations = getBubbleSortAnimation(arr);
+      swappingAnimations(animations);
+    }
+    const quick_sort = () =>{
+      if(started===false)
+        setStarted(true);
+      const animations = getQuickSortAnimation(arr);
+      swappingAnimations(animations);
+
+    }
+    const insertion_sort = () =>{
+      if(started===false)
+        setStarted(true);
+      const animations = getInsertionSortAnimation(arr);
+      ovrewriteAnimations(animations);
+
+    }
+    const heap_sort = ()=>{
+      if(started===false)
+        setStarted(true);
 
     }
     const createArray = () =>{
-        if(started===true)
-        {
-            toast.error("Sorting already in progress");
-            return;
-        }
+        if(checkStarted())return;
         const arrayBars = document.getElementsByClassName('bar');
         for(let i=0;i<arrayBars.length;i++)
         {
@@ -237,12 +194,9 @@ const SortingVisualizer = () => {
         setArr(Array)
         // console.log(arr)
     }
+
     const sort=()=>{
-        if(started === true)
-        {
-            toast.error("Sorting already in progress")
-            return;
-        }
+        if(checkStarted())return;
         if(type === '')
         {
           toast.error("Select an Algorithm");
@@ -261,84 +215,52 @@ const SortingVisualizer = () => {
               else if(type==="quick_sort")
                     quick_sort();
               else
-              {
-                      toast('Implementation in process try other algorithms',
-                      {
-                        icon: '👾',
-                        style: {
-                          borderRadius: '10px',
-                          background: '#333',
-                          backdropFilter : 'blur(10px)',
-                          color: '#fff',
-                        },
-                        position: "top-center",
-                      }
-                    );
-            }
+                    heap_sort();
               }, 10);
-
         }
     }
     const changeType = (e) =>{
-        if(started === true)
-        {
-            toast.error("Sorting already in progress")
-            return;
-        }
+        if(checkStarted())return;
         setType(e.target.value);
     }
     const changeSize = (e) =>{
-        if(started===true)
-        {
-            toast.error("Sorting already in progress")
-            return;
-        }
-        else
-        {
-          setSize(e.target.value);
-          createArray();
-        }
 
-
+        if(checkStarted())return;
+        setSize(e.target.value);
+        createArray();
     }
     useEffect(()=>{
         createArray();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[size])
-    return (<div>
-        <div><Toaster
-        position="top-left"
-        reverseOrder={false}
-        toastOptions={{
-            duration: 1500,
-          }}
-        /></div>
-        <div className="title">
-        <center><h2 className="heading">Sorting Visualizer</h2></center>
-        </div>
-      <div className="App">
-          <label className="text">Size</label>
-          <input className="range" value={size} type="range" min="30" max="80" step="10" onChange={(e)=>{changeSize(e);setSize(e.target.value)}}></input>
-          <button className="random" onClick={randomize}><strong>Randomise</strong></button>
-          <button id="slow" className="button" value={"bubble_sort"} onClick={(e)=>{changeType(e)}}> Bubble Sort</button>
-          <button id="fast" className="button" value={"heap_sort"} onClick={(e)=>{changeType(e)}}> Heap Sort</button>
-          <button id="slow" className="button" value={"insertion_sort"} onClick={(e)=>{changeType(e)}}> Insertion Sort</button>
-          <button id="fast" className="button" value={"merge_sort"} onClick={(e)=>{changeType(e)}}> Merge Sort</button>
-          <button id="fast" className="button" value={"quick_sort"} onClick={(e)=>{changeType(e)}}> Quick Sort</button>
-          <button id="sort"className="sortbutton" onClick={sort}>Sort</button>
-          <div id ="box"className="Box">
-          {
-                  arr.map((value,index) => {
-                  return(
-                        <div className="bar" style={{height:value}} key={index} >
-                        </div>
-                  )
-            })}
+
+    return (
+        <div>
+          <div>
+              <Toaster
+            position="top-center"
+            reverseOrder={false}
+            toastOptions={{
+                duration: 1500,
+              }}
+             />
           </div>
-      </div>
+          <div className="title">
+            <center><h2 className="heading">Sorting Visualizer</h2></center>
+          </div>
+          <div className="App">
+              <label className="text">Size</label>
+              <input className="range" value={size} type="range" min="30" max="80" step="10" onChange={(e)=>{changeSize(e)}}></input>
+              <button className="random" onClick={randomize}><strong>Randomise</strong></button>
+              <button id="slow" className="button" value={"bubble_sort"} onClick={(e)=>{changeType(e)}}> Bubble Sort</button>
+              <button id="fast" className="button" value={"heap_sort"} onClick={(e)=>{changeType(e)}}> Heap Sort</button>
+              <button id="slow" className="button" value={"insertion_sort"} onClick={(e)=>{changeType(e)}}> Insertion Sort</button>
+              <button id="fast" className="button" value={"merge_sort"} onClick={(e)=>{changeType(e)}}> Merge Sort</button>
+              <button id="fast" className="button" value={"quick_sort"} onClick={(e)=>{changeType(e)}}> Quick Sort</button>
+              <button id="sort"className="sortbutton" onClick={sort}>Sort</button>
+              <div id ="box"className="Box">{arr.map((value,index) => {return(<div className="bar" style={{height:value}} key={index}></div>)})}</div>
+          </div>
       </div>  );
 }
-function random(min,max) {
-    return Math.floor(Math.random()* (max-min+1)+min);
-}
+
 export default SortingVisualizer;

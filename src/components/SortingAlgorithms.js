@@ -1,3 +1,6 @@
+export function random(min,max) {
+  return Math.floor(Math.random()* (max-min+1)+min);
+}
 export function getMergeSortAnimations(array) {
     const animations = [];
     if (array.length <= 1) return array;
