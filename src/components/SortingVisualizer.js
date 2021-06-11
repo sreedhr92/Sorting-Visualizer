@@ -2,7 +2,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 import { useState,useEffect } from 'react';
-import {random,getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,getQuickSortAnimation} from './SortingAlgorithms.js';
+import {random,getMergeSortAnimations,getBubbleSortAnimation,getInsertionSortAnimation,getQuickSortAnimation,getHeapSortAnimation} from './SortingAlgorithms.js';
 
 
 // speed of the animations.
@@ -175,7 +175,8 @@ const SortingVisualizer = () => {
     const heap_sort = ()=>{
       if(started===false)
         setStarted(true);
-
+      const animations = getHeapSortAnimation(arr);
+      swappingAnimations(animations);
     }
     const createArray = () =>{
         if(checkStarted())return;

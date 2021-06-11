@@ -35,11 +35,9 @@ export function getMergeSortAnimations(array) {
     let i = startIdx;
     let j = middleIdx + 1;
     while (i <= middleIdx && j <= endIdx) {
-      // These are the values that we're comparing; we push them once
-      // to change their color.
+      //change their color.
       animations.push([i, j]);
-      // These are the values that we're comparing; we push them a second
-      // time to revert their color.
+      // revert their color.
       animations.push([i, j]);
       if (auxiliaryArray[i] <= auxiliaryArray[j]) {
         // We overwrite the value at index k in the original array with the
@@ -54,11 +52,9 @@ export function getMergeSortAnimations(array) {
       }
     }
     while (i <= middleIdx) {
-      // These are the values that we're comparing; we push them once
-      // to change their color.
+      // change their color.
       animations.push([i, i]);
-      // These are the values that we're comparing; we push them a second
-      // time to revert their color.
+      // revert their color.
       animations.push([i, i]);
       // We overwrite the value at index k in the original array with the
       // value at index i in the auxiliary array.
@@ -66,11 +62,9 @@ export function getMergeSortAnimations(array) {
       mainArray[k++] = auxiliaryArray[i++];
     }
     while (j <= endIdx) {
-      // These are the values that we're comparing; we push them once
-      // to change their color.
+      // change their color.
       animations.push([j, j]);
-      // These are the values that we're comparing; we push them a second
-      // time to revert their color.
+      // revert their color.
       animations.push([j, j]);
       // We overwrite the value at index k in the original array with the
       // value at index j in the auxiliary array.
@@ -88,11 +82,9 @@ export function getBubbleSortAnimation(array) {
       let sorted = true;
       for(let j=0;j<size-i-1;j++)
       {
-        // These are the values that we're comparing; we push them once
-        // to change their color.
+        // change their color.
         animations.push([j, j+1]);
-        // These are the values that we're comparing; we push them a second
-        // time to revert their color.
+        // revert their color.
         animations.push([j, j+1]);
           if(array[j]>array[j+1])
           {
@@ -124,18 +116,16 @@ export function getInsertionSortAnimation(array) {
      let notPlaced = true;
      for(let j=i-1;j>=0;j--)
      {
-          // These are the values that we're comparing; we push them once
-          // to change their color.
+          // change their color.
           animations.push([i, j]);
 
-          // These are the values that we're comparing; we push them a second
-          // time to revert their color.
+          // revert their color.
           animations.push([i, j]);
           if(array[j]>key)
           {
               array[j+1]=array[j];
               // We overwrite the value at index j+1 in the original array with the
-             // value at index j in the auxiliary array.
+              // value at index j in the auxiliary array.
               animations.push([j+1, array[j]]);
               hasMoved = true;
           }
@@ -215,4 +205,80 @@ function partition(
           array[i+1]=array[right];
           array[right]=temp;
           return (i+1);
+    }
+
+
+    export function getHeapSortAnimation(array) {
+      const animations = []
+      let size = array.length;
+      heapSortHelper(array,size,animations);
+      return animations;
+    }
+
+    function heapSortHelper(
+      array,
+      size,
+      animations,
+    ){
+          for(let i = Math.floor(size/2)-1; i>=0;i--)
+            heapify(array,size,i,animations)
+
+          for(let i=size-1;i>0;i--)
+          {
+            animations.push([0, i]);
+            animations.push([0, i]);
+            animations.push([0, array[i]]);
+            animations.push([i, array[0]]);
+            let temp = array[0];
+            array[0]=array[i];
+            array[i]=temp;
+            heapify(array,i,0,animations);
+          }
+    }
+
+
+    function heapify(
+      array,
+      size,
+      index,
+      animations,
+    ){
+            let largest = index;
+            let left = 2*index+1;
+            let right = 2*index+2;
+
+            if(left < size && array[left]> array[largest])
+            {
+              animations.push([left, largest]);
+              animations.push([left, largest]);
+              animations.push([null,null]);
+              animations.push([null,null]);
+              largest=left;
+            }
+            if(right < size && array[right]> array[largest])
+            {
+              animations.push([right, largest]);
+              animations.push([right, largest]);
+              animations.push([null,null]);
+              animations.push([null,null]);
+              largest=right;
+            }
+            if(largest !== index)
+            {
+              animations.push([index, largest]);
+              animations.push([index, largest]);
+              animations.push([index, array[largest]]);
+              animations.push([largest, array[index]]);
+              let temp = array[index];
+              array[index]=array[largest];
+              array[largest]=temp;
+              heapify(array,size,largest,animations)
+            }
+            else
+            {
+              animations.push([index, largest]);
+              animations.push([index, largest]);
+              animations.push([null,null]);
+              animations.push([null,null]);
+            }
     }
