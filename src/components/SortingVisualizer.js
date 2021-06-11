@@ -36,8 +36,7 @@ const SortingVisualizer = () => {
             background: '#333',
             backdropFilter : 'blur(10px)',
             color: '#fff',
-          },
-          position: "top-left",
+          }
         }
       );
           return true;
@@ -62,8 +61,7 @@ const SortingVisualizer = () => {
             background: '#333',
             backdropFilter : 'blur(10px)',
             color: '#fff',
-          },
-          position: "top-left",
+          }
         }
       );
     }
@@ -200,7 +198,16 @@ const SortingVisualizer = () => {
         if(checkStarted())return;
         if(type === '')
         {
-          toast.error("Select an Algorithm");
+          toast('Select an Algorithm',
+          {
+            icon: '❌',
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              backdropFilter : 'blur(10px)',
+              color: '#fff',
+            }
+          });
           createArray();
           return;
         }
@@ -239,7 +246,7 @@ const SortingVisualizer = () => {
         <div>
           <div>
               <Toaster
-            position="top-center"
+            position="top-left"
             reverseOrder={false}
             toastOptions={{
                 duration: 1500,
