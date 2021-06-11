@@ -37,7 +37,7 @@ const SortingVisualizer = () => {
             backdropFilter : 'blur(10px)',
             color: '#fff',
           },
-          position: "top-center",
+          position: "top-left",
         }
       );
           return true;
@@ -56,14 +56,14 @@ const SortingVisualizer = () => {
       box.style.boxShadow = "0 3px 30px -2px green";
       toast('Successfully Sorted',
         {
-          icon: '✔',
+          icon: '✅',
           style: {
             borderRadius: '10px',
             background: '#333',
             backdropFilter : 'blur(10px)',
             color: '#fff',
           },
-          position: "top-center",
+          position: "top-left",
         }
       );
     }
