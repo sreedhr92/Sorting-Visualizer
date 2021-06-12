@@ -269,7 +269,7 @@ const SortingVisualizer = () => {
               <button id="sort"className="sortbutton" onClick={sort}>Sort</button>
               <div id ="box"className="Box">{arr.map((value,index) => {return(<div className="bar" style={{height:value}} key={index}></div>)})}</div>
           </div>
-          <p style={{color:"rgb(143, 138, 138)",paddingLeft:"1150px",paddingRight:"10px"}}>Made with 💜 by Sreedhar
+          <p style={{color:"rgb(143, 138, 138)",paddingLeft:"20px",paddingRight:"10px"}}>Made with 💜 by Sreedhar
               <a href="https://github.com/sreedhr92/Sorting-Visualizer" class="fa fa-github"> </a>
           </p>
       </div>  );
