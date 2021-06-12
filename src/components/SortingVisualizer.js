@@ -244,6 +244,7 @@ const SortingVisualizer = () => {
 
     return (
         <div>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
           <div>
               <Toaster
             position="top-left"
@@ -268,6 +269,9 @@ const SortingVisualizer = () => {
               <button id="sort"className="sortbutton" onClick={sort}>Sort</button>
               <div id ="box"className="Box">{arr.map((value,index) => {return(<div className="bar" style={{height:value}} key={index}></div>)})}</div>
           </div>
+          <p style={{color:"rgb(143, 138, 138)",paddingLeft:"1150px",paddingRight:"10px"}}>Made with 💜 by Sreedhar
+              <a href="https://github.com/sreedhr92/Sorting-Visualizer" class="fa fa-github"> </a>
+          </p>
       </div>  );
 }
 
